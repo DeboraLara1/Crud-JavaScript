@@ -7,7 +7,7 @@ let currentList = [];
 function mySearch() {
   // Declaração das variaveis
   let input, filter, ul, li, a, i, txtValue;
-  
+
   input = document.getElementById("filtro-nome");
   filter = input.value.toUpperCase();
   ul = document.getElementById("wrapper-profile");
@@ -34,15 +34,15 @@ const getProfile = async () => {
 const renderProfiles = async () => {
   const profiles = await getProfile();
   novaLIstaTodos = profiles;
-  renderList('todos');
+  renderList("todos");
 };
 
 //construção da lista
 const buildProfile = (profiles, iconsType) => {
   const htmlProfile = profiles.map((profile) => {
     let listProfile = "";
-    
-      listProfile = `
+
+    listProfile = `
       <li class="list-profile" id="profile" >
         <div class="item-profile" onClick= "renderDetails('${profile.id}', 'details')" >
           <img src="${profile.img}" />
@@ -65,35 +65,38 @@ const buildProfile = (profiles, iconsType) => {
 
 // Realiza uma "leitura" na lista atual e mapeia o status de cada um, realizando um filtro por status iguais
 const moveProfile = (id, action) => {
-  novaLIstaTodos = novaLIstaTodos.map(item => {
-    if(item.id === id){
-      return{ ...item, status: action}
-    }else {
-      return { ...item}
+  novaLIstaTodos = novaLIstaTodos.map((item) => {
+    if (item.id === id) {
+      return { ...item, status: action };
+    } else {
+      return { ...item };
     }
-  })
-  renderList(currentList)
+  });
+  renderList(currentList);
 };
 
 // Carregamento do html
 const renderList = (typeList) => {
-  if(typeList !== currentList){
-    currentList = typeList
+  if (typeList !== currentList) {
+    currentList = typeList;
   }
 
-  let newLista = novaLIstaTodos.filter(item => item.status === currentList)
+  let newLista = novaLIstaTodos.filter((item) => item.status === currentList);
   const wrapperProfile = document.querySelector("#wrapper-profile");
   wrapperProfile.innerHTML = "";
 
   // Valida lista, caso esteja vazia mostra mensagem do else
-  if(newLista.length){
+  if (newLista.length) {
     const htmlProfiles = buildProfile(newLista, "todos");
     htmlProfiles.forEach((htmlProfile) =>
-    wrapperProfile.insertAdjacentHTML("beforeend", htmlProfile)
-  ); 
+      wrapperProfile.insertAdjacentHTML("beforeend", htmlProfile)
+    );
   } else {
-    wrapperProfile.insertAdjacentHTML("beforeend", `<p> Nenhum item encontrado </p>`)
-  }  
+    wrapperProfile.insertAdjacentHTML(
+      "beforeend",
+      `<p> Nenhum item encontrado </p>`
+    );
+  }
 };
 renderProfiles();
 
@@ -132,30 +135,30 @@ const buildDetalhes = (listaDetails) => {
 // pegando item e colocando na lista
 const SetDetails = (id, list) => {
   const removidoProfile = renderDetails(id, list);
-  if(List === 'details'){
-  listaDetails.push(removidoProfile);
+  if (List === "details") {
+    listaDetails.push(removidoProfile);
   }
-}   
+};
 
 const renderDetails = (id, List) => {
   // Pegando a lista
-    if(List === 'details'){
-     //filtrando item clicado
-      listaDetails = listaGlobal.filter((novaTodos) => novaTodos.id === id);
-      document.querySelector(".page").style.display = "none";
-      const wrapperProfile = document.querySelector("#detalhes");
-      const htmlProfiles = buildDetalhes(listaDetails, "details");
-      htmlProfiles.forEach((htmlProfile) =>
+  if (List === "details") {
+    //filtrando item clicado
+    listaDetails = listaGlobal.filter((novaTodos) => novaTodos.id === id);
+    document.querySelector(".page").style.display = "none";
+    const wrapperProfile = document.querySelector("#detalhes");
+    const htmlProfiles = buildDetalhes(listaDetails, "details");
+    htmlProfiles.forEach((htmlProfile) =>
       wrapperProfile.insertAdjacentHTML("beforeend", htmlProfile)
-      )
-    }
+    );
+  }
 };
 
-const returnProfile= () => {
+const returnProfile = () => {
   document.querySelector("#detalhes").style.display = "none";
   const wrapperProfile = document.querySelector(".page");
-  wrapperProfile.style.display = "";  
-}
+  wrapperProfile.style.display = "";
+};
 
 function actionsDetails(propriedade) {
   let person = listaDetails[listaDetails.length - 1];
